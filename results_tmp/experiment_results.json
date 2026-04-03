@@ -1,0 +1,109 @@
+{
+  "config": {
+    "name": "Random Forest - Cyclic Group Classification",
+    "samples_per_group": 50,
+    "max_order": 20,
+    "test_size": 0.2,
+    "cv_folds": 5,
+    "random_seed": 42,
+    "output_dir": "results"
+  },
+  "timestamp": "2026-04-04T01:32:03.474798",
+  "dataset": {
+    "total_samples": 2050,
+    "cyclic_samples": 950,
+    "non_cyclic_samples": 1100,
+    "unique_group_types": 41
+  },
+  "features": {
+    "num_features": 20,
+    "feature_names": [
+      "order",
+      "is_symmetric",
+      "symmetry_ratio",
+      "max_element_order",
+      "min_element_order",
+      "mean_element_order",
+      "std_element_order",
+      "max_order_ratio",
+      "num_generators",
+      "generator_ratio",
+      "num_distinct_orders",
+      "order_entropy",
+      "diagonal_identity_count",
+      "trace_value",
+      "latin_square",
+      "row_uniformity",
+      "num_involutions",
+      "self_inverse_ratio",
+      "num_subgroup_orders",
+      "euler_phi_ratio"
+    ]
+  },
+  "split": {
+    "train_size": 1640,
+    "test_size": 410,
+    "train_cyclic": 760,
+    "test_cyclic": 190
+  },
+  "best_params": {
+    "max_depth": 5,
+    "min_samples_leaf": 1,
+    "min_samples_split": 2,
+    "n_estimators": 50
+  },
+  "best_cv_f1": 1.0,
+  "cv_accuracy_mean": 1.0,
+  "cv_accuracy_std": 0.0,
+  "test_metrics": {
+    "accuracy": 1.0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1_score": 1.0,
+    "auc_roc": 1.0
+  },
+  "classification_report": {
+    "Non-Cyclic": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 220.0
+    },
+    "Cyclic": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 190.0
+    },
+    "accuracy": 1.0,
+    "macro avg": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 410.0
+    },
+    "weighted avg": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 410.0
+    }
+  },
+  "feature_importance": {
+    "max_order_ratio": 0.2631,
+    "euler_phi_ratio": 0.2389,
+    "num_generators": 0.1889,
+    "generator_ratio": 0.124,
+    "num_involutions": 0.077,
+    "diagonal_identity_count": 0.0279,
+    "self_inverse_ratio": 0.0275,
+    "max_element_order": 0.0223,
+    "std_element_order": 0.0113,
+    "mean_element_order": 0.0076,
+    "is_symmetric": 0.006,
+    "symmetry_ratio": 0.0026,
+    "order": 0.0018,
+    "order_entropy": 0.0005,
+    "min_element_order": 0.0005
+  }
+}
