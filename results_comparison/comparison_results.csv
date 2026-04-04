@@ -1,0 +1,13 @@
+feature_set,model,accuracy,precision,recall,f1_score,auc_roc,cv_accuracy_mean,cv_accuracy_std,train_time_seconds
+Hand-crafted (20 features),Random Forest,1.0,1.0,1.0,1.0,1.0,1.0,0.0,0.058
+Hand-crafted (20 features),Gradient Boosting,1.0,1.0,1.0,1.0,1.0,1.0,0.0,0.054
+Hand-crafted (20 features),SVM (RBF),1.0,1.0,1.0,1.0,1.0,1.0,0.0,0.01
+Hand-crafted (20 features),KNN (k=5),1.0,1.0,1.0,1.0,1.0,1.0,0.0,0.001
+Hand-crafted (20 features),Logistic Regression,1.0,1.0,1.0,1.0,1.0,1.0,0.0,0.005
+Hand-crafted (20 features),MLP Neural Network,1.0,1.0,1.0,1.0,1.0,0.9975,0.005,0.117
+Raw flattened (420 features),Random Forest,1.0,1.0,1.0,1.0,1.0,1.0,0.0,0.171
+Raw flattened (420 features),Gradient Boosting,1.0,1.0,1.0,1.0,1.0,1.0,0.0,0.332
+Raw flattened (420 features),SVM (RBF),1.0,1.0,1.0,1.0,1.0,1.0,0.0,0.525
+Raw flattened (420 features),KNN (k=5),1.0,1.0,1.0,1.0,1.0,0.9994,0.0013,0.003
+Raw flattened (420 features),Logistic Regression,1.0,1.0,1.0,1.0,1.0,1.0,0.0,0.138
+Raw flattened (420 features),MLP Neural Network,1.0,1.0,1.0,1.0,1.0,0.9975,0.0023,0.219

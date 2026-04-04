@@ -1,0 +1,164 @@
+{
+  "config": {
+    "name": "Multi-Model Comparison - Cyclic Group Classification",
+    "samples_per_group": 50,
+    "max_order": 20,
+    "max_pad_size": 20,
+    "test_size": 0.2,
+    "cv_folds": 5,
+    "random_seed": 42,
+    "output_dir": "results_comparison"
+  },
+  "timestamp": "2026-04-04T10:27:21.896031",
+  "dataset": {
+    "total_samples": 2000,
+    "cyclic": 950,
+    "non_cyclic": 1050
+  },
+  "model_results": [
+    {
+      "feature_set": "Hand-crafted (20 features)",
+      "model": "Random Forest",
+      "accuracy": 1.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "auc_roc": 1.0,
+      "cv_accuracy_mean": 1.0,
+      "cv_accuracy_std": 0.0,
+      "train_time_seconds": 0.058
+    },
+    {
+      "feature_set": "Hand-crafted (20 features)",
+      "model": "Gradient Boosting",
+      "accuracy": 1.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "auc_roc": 1.0,
+      "cv_accuracy_mean": 1.0,
+      "cv_accuracy_std": 0.0,
+      "train_time_seconds": 0.054
+    },
+    {
+      "feature_set": "Hand-crafted (20 features)",
+      "model": "SVM (RBF)",
+      "accuracy": 1.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "auc_roc": 1.0,
+      "cv_accuracy_mean": 1.0,
+      "cv_accuracy_std": 0.0,
+      "train_time_seconds": 0.01
+    },
+    {
+      "feature_set": "Hand-crafted (20 features)",
+      "model": "KNN (k=5)",
+      "accuracy": 1.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "auc_roc": 1.0,
+      "cv_accuracy_mean": 1.0,
+      "cv_accuracy_std": 0.0,
+      "train_time_seconds": 0.001
+    },
+    {
+      "feature_set": "Hand-crafted (20 features)",
+      "model": "Logistic Regression",
+      "accuracy": 1.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "auc_roc": 1.0,
+      "cv_accuracy_mean": 1.0,
+      "cv_accuracy_std": 0.0,
+      "train_time_seconds": 0.005
+    },
+    {
+      "feature_set": "Hand-crafted (20 features)",
+      "model": "MLP Neural Network",
+      "accuracy": 1.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "auc_roc": 1.0,
+      "cv_accuracy_mean": 0.9975,
+      "cv_accuracy_std": 0.005,
+      "train_time_seconds": 0.117
+    },
+    {
+      "feature_set": "Raw flattened (420 features)",
+      "model": "Random Forest",
+      "accuracy": 1.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "auc_roc": 1.0,
+      "cv_accuracy_mean": 1.0,
+      "cv_accuracy_std": 0.0,
+      "train_time_seconds": 0.171
+    },
+    {
+      "feature_set": "Raw flattened (420 features)",
+      "model": "Gradient Boosting",
+      "accuracy": 1.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "auc_roc": 1.0,
+      "cv_accuracy_mean": 1.0,
+      "cv_accuracy_std": 0.0,
+      "train_time_seconds": 0.332
+    },
+    {
+      "feature_set": "Raw flattened (420 features)",
+      "model": "SVM (RBF)",
+      "accuracy": 1.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "auc_roc": 1.0,
+      "cv_accuracy_mean": 1.0,
+      "cv_accuracy_std": 0.0,
+      "train_time_seconds": 0.525
+    },
+    {
+      "feature_set": "Raw flattened (420 features)",
+      "model": "KNN (k=5)",
+      "accuracy": 1.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "auc_roc": 1.0,
+      "cv_accuracy_mean": 0.9994,
+      "cv_accuracy_std": 0.0013,
+      "train_time_seconds": 0.003
+    },
+    {
+      "feature_set": "Raw flattened (420 features)",
+      "model": "Logistic Regression",
+      "accuracy": 1.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "auc_roc": 1.0,
+      "cv_accuracy_mean": 1.0,
+      "cv_accuracy_std": 0.0,
+      "train_time_seconds": 0.138
+    },
+    {
+      "feature_set": "Raw flattened (420 features)",
+      "model": "MLP Neural Network",
+      "accuracy": 1.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "auc_roc": 1.0,
+      "cv_accuracy_mean": 0.9975,
+      "cv_accuracy_std": 0.0023,
+      "train_time_seconds": 0.219
+    }
+  ]
+}
