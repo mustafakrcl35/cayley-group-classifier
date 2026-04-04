@@ -1,71 +1,71 @@
 # Cayley Table Group Classifier
 
-Verilen bir Cayley tablosunun **cyclic olup olmadığını** hem cebirsel yöntemlerle hem de **makine öğrenmesi (binary classification)** ile belirleyen bir Python projesi.
+Determines whether a given Cayley table represents a **cyclic group** using both algebraic methods and **machine learning (binary classification)**.
 
-## Proje Yapısı
+## Project Structure
 
 ```
 cayley_group_classifier/
-├── group_classifier.py          # Cebirsel analiz (grup aksiyomları, cyclic testi)
-├── dataset_generator.py         # Cayley table veri seti üreteci
-├── feature_extraction.py        # Öznitelik çıkarma pipeline'ı
-├── experiment_random_forest.py  # Random Forest deneyi
-├── test_classifier.py           # Birim testler
-├── results/                     # Deney sonuçları
-│   ├── experiment_results.json  # Tüm metrikler (JSON)
-│   ├── dataset.csv              # Üretilen veri seti
-│   ├── confusion_matrix.png     # Confusion matrix görseli
-│   ├── roc_curve.png            # ROC eğrisi
-│   ├── feature_importance.png   # Öznitelik önem sıralaması
-│   └── distributions.png        # Sınıf ve mertebe dağılımları
+├── group_classifier.py          # Algebraic analysis (group axioms, cyclic test)
+├── dataset_generator.py         # Cayley table dataset generator
+├── feature_extraction.py        # Feature extraction pipeline
+├── experiment_random_forest.py  # Random Forest experiment
+├── test_classifier.py           # Unit tests
+├── results/                     # Experiment results
+│   ├── experiment_results.json  # All metrics (JSON)
+│   ├── dataset.csv              # Generated dataset
+│   ├── confusion_matrix.png     # Confusion matrix visualization
+│   ├── roc_curve.png            # ROC curve
+│   ├── feature_importance.png   # Feature importance ranking
+│   └── distributions.png        # Class and order distributions
 └── README.md
 ```
 
 ---
 
-## Deney: Binary Classification ile Cyclic Grup Tespiti
+## Experiment: Binary Classification of Cyclic Groups
 
-### Amaç
+### Objective
 
-Bir Cayley tablosunun temsil ettiği grubun **cyclic olup olmadığını** makine öğrenmesi ile sınıflandırmak.
+Classify whether the group represented by a Cayley table is **cyclic or not** using machine learning.
 
-### Veri Seti
+### Dataset
 
-Veri seti `dataset_generator.py` ile sentetik olarak üretilmiştir:
+The dataset is synthetically generated using `dataset_generator.py`:
 
-| Kategori | Grup Tipleri | Örnek Sayısı |
+| Category | Group Types | Sample Count |
 |----------|-------------|:------------:|
-| **Cyclic** | Z₂, Z₃, ..., Z₂₀ | 950 |
-| **Non-Cyclic** | V₄, S₃, D₃–D₁₀, Q₈, Z₂×Z₂, Z₂×Z₄, ... | 1100 |
-| **Toplam** | 41 benzersiz grup tipi | **2050** |
+| **Cyclic** | Z_2, Z_3, ..., Z_20 | 950 |
+| **Non-Cyclic** | V_4, S_3, D_3-D_10, Q_8, Z_2xZ_2, Z_2xZ_4, ... | 1100 |
+| **Total** | 41 unique group types | **2050** |
 
-Her grup yapısından 50 farklı **rastgele yeniden etiketleme (relabeling)** ile izomorfik ama farklı görünen tablolar üretilmiştir.
+For each group structure, 50 different **random relabelings** are applied to produce isomorphic but visually distinct tables.
 
-### Öznitelikler (Features)
+### Features
 
-Cayley tablolarından 20 yapısal öznitelik çıkarılmıştır:
+20 structural features are extracted from each Cayley table:
 
-| Kategori | Öznitelikler |
-|----------|-------------|
-| **Yapısal** | order, is_symmetric, symmetry_ratio |
-| **Eleman Mertebeleri** | max/min/mean/std_element_order, max_order_ratio, num_generators, generator_ratio, num_distinct_orders, order_entropy |
-| **İstatistiksel** | diagonal_identity_count, trace_value, latin_square, row_uniformity |
-| **Topolojik** | num_involutions, self_inverse_ratio, num_subgroup_orders, euler_phi_ratio |
+| Category | Features |
+|----------|----------|
+| **Structural** | order, is_symmetric, symmetry_ratio |
+| **Element Orders** | max/min/mean/std_element_order, max_order_ratio, num_generators, generator_ratio, num_distinct_orders, order_entropy |
+| **Statistical** | diagonal_identity_count, trace_value, latin_square, row_uniformity |
+| **Topological** | num_involutions, self_inverse_ratio, num_subgroup_orders, euler_phi_ratio |
 
 ### Model: Random Forest
 
-GridSearchCV ile hiperparametre optimizasyonu yapılmıştır (5-fold Stratified CV):
+Hyperparameter optimization was performed via GridSearchCV (5-fold Stratified CV):
 
-| Parametre | Değer |
+| Parameter | Value |
 |-----------|:-----:|
 | n_estimators | 50 |
 | max_depth | 5 |
 | min_samples_split | 2 |
 | min_samples_leaf | 1 |
 
-### Sonuçlar
+### Results
 
-| Metrik | Değer |
+| Metric | Value |
 |--------|:-----:|
 | **Accuracy** | 1.0000 |
 | **Precision** | 1.0000 |
@@ -85,24 +85,24 @@ GridSearchCV ile hiperparametre optimizasyonu yapılmıştır (5-fold Stratified
 
 ![Feature Importance](results/feature_importance.png)
 
-#### Sınıf Dağılımı
+#### Class Distribution
 
 ![Distributions](results/distributions.png)
 
-### Tartışma
+### Discussion
 
-Model %100 doğruluk elde etmiştir. Bu sonuç, çıkarılan özniteliklerin (özellikle `max_order_ratio` ve `euler_phi_ratio`) cyclic grup yapısını doğrudan yansıtmasından kaynaklanmaktadır. Cyclic bir grupta tanım gereği mertebesi *n* olan en az bir eleman bulunur, bu da `max_order_ratio = 1.0` olmasını garanti eder.
+The model achieved 100% accuracy. This result is due to the extracted features (especially `max_order_ratio` and `euler_phi_ratio`) directly encoding the cyclic group property. By definition, a cyclic group contains at least one element of order *n*, which guarantees `max_order_ratio = 1.0`.
 
-Bu durum, el ile tasarlanmış (hand-crafted) özniteliklerin güçlü bilgi taşıdığını göstermektedir. İleriki deneylerde:
-- Sadece ham tablo verisi (flattened table) üzerinden sınıflandırma denenebilir
-- Daha zorlu öznitelik alt kümeleri ile deney tekrarlanabilir
-- Deep learning modelleri (CNN, GNN) ile yapısal öğrenme test edilebilir
+This demonstrates the power of well-designed hand-crafted features. Future experiments may include:
+- Classification using only raw table data (flattened table) without structural features
+- Repeating experiments with more challenging feature subsets
+- Testing deep learning models (CNN, GNN) for structural learning
 
 ---
 
-## Cebirsel Analiz Aracı
+## Algebraic Analysis Tool
 
-`group_classifier.py` ayrıca bağımsız bir cebirsel analiz aracı olarak kullanılabilir:
+`group_classifier.py` can also be used as a standalone algebraic analysis tool:
 
 ```python
 from group_classifier import CayleyTableAnalyzer
@@ -118,29 +118,29 @@ analyzer = CayleyTableAnalyzer(table, elements=["e", "a", "b", "c"])
 analyzer.full_report()
 ```
 
-Kontrol edilen özellikler: kapalılık, birim eleman, tersler, birleşme, cyclic testi, abelyen kontrolü, alt gruplar, grup tanımlama.
+Checks performed: closure, identity element, inverses, associativity, cyclic test, abelian check, subgroups, group identification.
 
-## Kurulum ve Çalıştırma
+## Installation and Usage
 
 ```bash
-# Gereksinimler
+# Requirements
 pip install numpy pandas scikit-learn matplotlib seaborn
 
-# Cebirsel analiz örnekleri
+# Run algebraic analysis examples
 python group_classifier.py
 
-# ML deneyini çalıştır
+# Run ML experiment
 python experiment_random_forest.py
 
-# Testler
+# Run tests
 python test_classifier.py
 ```
 
-## Gereksinimler
+## Requirements
 
 - Python 3.10+
 - numpy, pandas, scikit-learn, matplotlib, seaborn
 
-## Lisans
+## License
 
 MIT

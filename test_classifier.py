@@ -7,7 +7,7 @@ from group_classifier import CayleyTableAnalyzer
 
 
 class TestGroupAxioms(unittest.TestCase):
-    """Grup aksiyomları testleri."""
+    """Tests for group axiom verification."""
 
     def test_z4_is_group(self):
         table = [
@@ -56,7 +56,7 @@ class TestGroupAxioms(unittest.TestCase):
 
 
 class TestCyclicDetection(unittest.TestCase):
-    """Cyclic grup tespiti testleri."""
+    """Tests for cyclic group detection."""
 
     def test_z4_is_cyclic(self):
         table = [
@@ -123,7 +123,7 @@ class TestCyclicDetection(unittest.TestCase):
 
 
 class TestElementOrders(unittest.TestCase):
-    """Eleman mertebesi testleri."""
+    """Tests for element order computation."""
 
     def test_z4_orders(self):
         table = [
@@ -134,7 +134,7 @@ class TestElementOrders(unittest.TestCase):
         ]
         a = CayleyTableAnalyzer(table)
         a.find_identity()
-        self.assertEqual(a.element_order(0), 1)  # birim
+        self.assertEqual(a.element_order(0), 1)  # identity
         self.assertEqual(a.element_order(1), 4)
         self.assertEqual(a.element_order(2), 2)
         self.assertEqual(a.element_order(3), 4)
@@ -155,7 +155,7 @@ class TestElementOrders(unittest.TestCase):
 
 
 class TestAbelian(unittest.TestCase):
-    """Abelyen grup testleri."""
+    """Tests for abelian group detection."""
 
     def test_z4_is_abelian(self):
         table = [
@@ -183,7 +183,7 @@ class TestAbelian(unittest.TestCase):
 
 
 class TestGroupIdentification(unittest.TestCase):
-    """Grup tanımlama testleri."""
+    """Tests for group identification."""
 
     def test_identify_z4(self):
         table = [
@@ -195,7 +195,7 @@ class TestGroupIdentification(unittest.TestCase):
         a = CayleyTableAnalyzer(table)
         a.is_group()
         name = a.identify_group()
-        self.assertIn("Z₄", name)
+        self.assertIn("Z_4", name)
 
     def test_identify_klein4(self):
         table = [
@@ -221,7 +221,7 @@ class TestGroupIdentification(unittest.TestCase):
         a = CayleyTableAnalyzer(table)
         a.is_group()
         name = a.identify_group()
-        self.assertIn("S₃", name)
+        self.assertIn("S_3", name)
 
 
 if __name__ == "__main__":

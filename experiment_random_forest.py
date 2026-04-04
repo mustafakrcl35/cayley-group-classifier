@@ -1,16 +1,16 @@
 """
 Experiment: Random Forest Classification of Cayley Tables
 ============================================================
-Cayley tablolarının cyclic olup olmadığını Random Forest ile sınıflandırır.
+Classifies Cayley tables as cyclic or non-cyclic using Random Forest.
 
-Deney adımları:
-1. Veri seti üretimi (cyclic ve non-cyclic gruplar)
+Experiment steps:
+1. Dataset generation (cyclic and non-cyclic groups)
 2. Feature extraction
 3. Train/test split
-4. Random Forest eğitimi ve hiperparametre optimizasyonu
-5. Değerlendirme (accuracy, precision, recall, F1, confusion matrix)
-6. Feature importance analizi
-7. Sonuçların raporlanması ve görselleştirilmesi
+4. Random Forest training with hyperparameter optimization
+5. Evaluation (accuracy, precision, recall, F1, confusion matrix)
+6. Feature importance analysis
+7. Result reporting and visualization
 """
 
 import numpy as np
@@ -47,7 +47,7 @@ from feature_extraction import extract_features_structured, get_feature_names
 
 
 # =============================================================================
-# DENEY AYARLARI
+# EXPERIMENT CONFIGURATION
 # =============================================================================
 
 EXPERIMENT_CONFIG = {
@@ -62,7 +62,7 @@ EXPERIMENT_CONFIG = {
 
 
 def run_experiment(config: dict = None) -> dict:
-    """Ana deney fonksiyonu."""
+    """Main experiment function."""
     if config is None:
         config = EXPERIMENT_CONFIG
 
@@ -70,14 +70,14 @@ def run_experiment(config: dict = None) -> dict:
     results = {"config": config, "timestamp": datetime.now().isoformat()}
 
     print("=" * 70)
-    print("  DENEY: Cayley Table Cyclic/Non-Cyclic Binary Classification")
+    print("  EXPERIMENT: Cayley Table Cyclic/Non-Cyclic Binary Classification")
     print("  Model: Random Forest")
     print("=" * 70)
 
     # -----------------------------------------------------------------
-    # 1. VERİ SETİ ÜRETİMİ
+    # 1. DATASET GENERATION
     # -----------------------------------------------------------------
-    print("\n[1/6] Veri seti üretiliyor...")
+    print("\n[1/6] Generating dataset...")
     tables, labels, descriptions = generate_dataset(
         samples_per_group=config["samples_per_group"],
         max_order=config["max_order"],
@@ -90,18 +90,18 @@ def run_experiment(config: dict = None) -> dict:
         "non_cyclic_samples": len(labels) - sum(labels),
         "unique_group_types": len(set(descriptions)),
     }
-    print(f"    Toplam: {len(tables)} örnek")
+    print(f"    Total: {len(tables)} samples")
     print(f"    Cyclic: {sum(labels)}, Non-cyclic: {len(labels) - sum(labels)}")
 
     # -----------------------------------------------------------------
     # 2. FEATURE EXTRACTION
     # -----------------------------------------------------------------
-    print("\n[2/6] Öznitelikler çıkarılıyor...")
+    print("\n[2/6] Extracting features...")
     X = np.array([extract_features_structured(t) for t in tables])
     y = np.array(labels)
     feature_names = get_feature_names()
 
-    print(f"    Öznitelik sayısı: {len(feature_names)}")
+    print(f"    Number of features: {len(feature_names)}")
     print(f"    Feature names: {', '.join(feature_names)}")
 
     # Feature DataFrame
@@ -118,7 +118,7 @@ def run_experiment(config: dict = None) -> dict:
     # -----------------------------------------------------------------
     # 3. TRAIN/TEST SPLIT
     # -----------------------------------------------------------------
-    print("\n[3/6] Train/test ayrımı yapılıyor...")
+    print("\n[3/6] Splitting into train/test sets...")
     X_train, X_test, y_train, y_test = train_test_split(
         X, y,
         test_size=config["test_size"],
@@ -142,9 +142,9 @@ def run_experiment(config: dict = None) -> dict:
     }
 
     # -----------------------------------------------------------------
-    # 4. MODEL EĞİTİMİ + HİPERPARAMETRE OPTİMİZASYONU
+    # 4. MODEL TRAINING + HYPERPARAMETER OPTIMIZATION
     # -----------------------------------------------------------------
-    print("\n[4/6] Random Forest eğitiliyor (GridSearch ile)...")
+    print("\n[4/6] Training Random Forest (with GridSearch)...")
     param_grid = {
         "n_estimators": [50, 100, 200],
         "max_depth": [5, 10, 20, None],
@@ -168,24 +168,24 @@ def run_experiment(config: dict = None) -> dict:
     best_model = grid_search.best_estimator_
     best_params = grid_search.best_params_
 
-    print(f"    En iyi parametreler: {best_params}")
-    print(f"    En iyi CV F1 skoru: {grid_search.best_score_:.4f}")
+    print(f"    Best parameters: {best_params}")
+    print(f"    Best CV F1 score: {grid_search.best_score_:.4f}")
 
     results["best_params"] = best_params
     results["best_cv_f1"] = round(grid_search.best_score_, 4)
 
-    # Cross-validation sonuçları
+    # Cross-validation results
     cv_scores = cross_val_score(best_model, X_train_scaled, y_train,
                                 cv=cv, scoring="accuracy")
-    print(f"    CV Accuracy: {cv_scores.mean():.4f} ± {cv_scores.std():.4f}")
+    print(f"    CV Accuracy: {cv_scores.mean():.4f} +/- {cv_scores.std():.4f}")
 
     results["cv_accuracy_mean"] = round(cv_scores.mean(), 4)
     results["cv_accuracy_std"] = round(cv_scores.std(), 4)
 
     # -----------------------------------------------------------------
-    # 5. DEĞERLENDİRME
+    # 5. EVALUATION
     # -----------------------------------------------------------------
-    print("\n[5/6] Test seti üzerinde değerlendirme...")
+    print("\n[5/6] Evaluating on test set...")
     y_pred = best_model.predict(X_test_scaled)
     y_proba = best_model.predict_proba(X_test_scaled)[:, 1]
 
@@ -217,9 +217,9 @@ def run_experiment(config: dict = None) -> dict:
     )
 
     # -----------------------------------------------------------------
-    # 6. GÖRSELLEŞTİRME
+    # 6. VISUALIZATION
     # -----------------------------------------------------------------
-    print("\n[6/6] Görseller oluşturuluyor...")
+    print("\n[6/6] Generating visualizations...")
 
     # --- Confusion Matrix ---
     cm = confusion_matrix(y_test, y_pred)
@@ -227,9 +227,9 @@ def run_experiment(config: dict = None) -> dict:
     sns.heatmap(cm, annot=True, fmt="d", cmap="Blues",
                 xticklabels=["Non-Cyclic", "Cyclic"],
                 yticklabels=["Non-Cyclic", "Cyclic"], ax=ax)
-    ax.set_xlabel("Tahmin")
-    ax.set_ylabel("Gerçek")
-    ax.set_title("Confusion Matrix — Random Forest")
+    ax.set_xlabel("Predicted")
+    ax.set_ylabel("Actual")
+    ax.set_title("Confusion Matrix - Random Forest")
     plt.tight_layout()
     plt.savefig(os.path.join(config["output_dir"], "confusion_matrix.png"), dpi=150)
     plt.close()
@@ -241,7 +241,7 @@ def run_experiment(config: dict = None) -> dict:
     ax.plot([0, 1], [0, 1], "k--", alpha=0.5)
     ax.set_xlabel("False Positive Rate")
     ax.set_ylabel("True Positive Rate")
-    ax.set_title("ROC Curve — Random Forest")
+    ax.set_title("ROC Curve - Random Forest")
     ax.legend(loc="lower right")
     ax.grid(True, alpha=0.3)
     plt.tight_layout()
@@ -262,7 +262,7 @@ def run_experiment(config: dict = None) -> dict:
     ax.set_yticks(range(top_k))
     ax.set_yticklabels([feature_names[i] for i in sorted_idx[:top_k]][::-1])
     ax.set_xlabel("Feature Importance")
-    ax.set_title("Top Feature Importances — Random Forest")
+    ax.set_title("Top Feature Importances - Random Forest")
     plt.tight_layout()
     plt.savefig(os.path.join(config["output_dir"], "feature_importance.png"), dpi=150)
     plt.close()
@@ -275,7 +275,7 @@ def run_experiment(config: dict = None) -> dict:
     # --- Class Distribution ---
     fig, axes = plt.subplots(1, 2, figsize=(12, 5))
 
-    # Train/Test dağılımı
+    # Train/Test distribution
     train_counts = [sum(y_train == 0), sum(y_train == 1)]
     test_counts = [sum(y_test == 0), sum(y_test == 1)]
     x_pos = np.arange(2)
@@ -284,37 +284,37 @@ def run_experiment(config: dict = None) -> dict:
     axes[0].bar(x_pos + width/2, test_counts, width, label="Test", color="coral")
     axes[0].set_xticks(x_pos)
     axes[0].set_xticklabels(["Non-Cyclic", "Cyclic"])
-    axes[0].set_ylabel("Sayı")
-    axes[0].set_title("Sınıf Dağılımı (Train/Test)")
+    axes[0].set_ylabel("Count")
+    axes[0].set_title("Class Distribution (Train/Test)")
     axes[0].legend()
 
-    # Order dağılımı
+    # Order distribution
     orders = [len(t) for t in tables]
     cyclic_orders = [o for o, l in zip(orders, labels) if l == 1]
     non_cyclic_orders = [o for o, l in zip(orders, labels) if l == 0]
     axes[1].hist(cyclic_orders, bins=20, alpha=0.6, label="Cyclic", color="steelblue")
     axes[1].hist(non_cyclic_orders, bins=20, alpha=0.6, label="Non-Cyclic", color="coral")
-    axes[1].set_xlabel("Grup Mertebesi")
-    axes[1].set_ylabel("Sayı")
-    axes[1].set_title("Grup Mertebesi Dağılımı")
+    axes[1].set_xlabel("Group Order")
+    axes[1].set_ylabel("Count")
+    axes[1].set_title("Group Order Distribution")
     axes[1].legend()
 
     plt.tight_layout()
     plt.savefig(os.path.join(config["output_dir"], "distributions.png"), dpi=150)
     plt.close()
 
-    print(f"    Görseller '{config['output_dir']}/' klasörüne kaydedildi.")
+    print(f"    Visualizations saved to '{config['output_dir']}/'.")
 
     # -----------------------------------------------------------------
-    # SONUÇLARI KAYDET
+    # SAVE RESULTS
     # -----------------------------------------------------------------
     with open(os.path.join(config["output_dir"], "experiment_results.json"), "w",
               encoding="utf-8") as f:
         json.dump(results, f, indent=2, ensure_ascii=False, default=str)
 
-    print(f"\n    Sonuçlar '{config['output_dir']}/experiment_results.json' dosyasına kaydedildi.")
+    print(f"\n    Results saved to '{config['output_dir']}/experiment_results.json'.")
     print("\n" + "=" * 70)
-    print(f"  SONUÇ: Accuracy={acc:.4f}  F1={f1:.4f}  AUC={auc:.4f}")
+    print(f"  RESULT: Accuracy={acc:.4f}  F1={f1:.4f}  AUC={auc:.4f}")
     print("=" * 70)
 
     return results
